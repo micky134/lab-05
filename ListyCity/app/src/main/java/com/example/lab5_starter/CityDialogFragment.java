@@ -3,6 +3,7 @@ package com.example.lab5_starter;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ public class CityDialogFragment extends DialogFragment {
     interface CityDialogListener {
         void updateCity(City city, String title, String year);
         void addCity(City city);
+        void deleteCity(City city);
     }
     private CityDialogListener listener;
 
@@ -65,12 +67,16 @@ public class CityDialogFragment extends DialogFragment {
                 .setView(view)
                 .setTitle("City Details")
                 .setNegativeButton("Cancel", null)
+                .setNeutralButton("Delete", (dialog, which) -> {
+                    listener.deleteCity(city);
+                })
                 .setPositiveButton("Continue", (dialog, which) -> {
                     String title = editMovieName.getText().toString();
                     String year = editMovieYear.getText().toString();
                     if (Objects.equals(tag, "City Details")) {
                         listener.updateCity(city, title, year);
-                    } else {
+                    }
+                    else {
                         listener.addCity(new City(title, year));
                     }
                 })
